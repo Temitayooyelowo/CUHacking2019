@@ -54,7 +54,7 @@ async function get_inserts(user, repo, sha){
 			let extension = regex.exec(files[i]["filename"]);
 			extension = !!extension ? extension[0] : extension;
 			if(extension in languages){
-				inserts["date"] = request["commit"]["author"]["date"]
+				// inserts["date"] = request["commit"]["author"]["date"]
 				inserts["languages"] = {}
 				if(languages[extension] in inserts["languages"] && files[i]["additions"] > 0){
 					inserts["languages"][languages[extension]] += files[i]["additions"]

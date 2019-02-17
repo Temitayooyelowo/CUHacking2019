@@ -39,7 +39,6 @@ function get_aggregate_pie(all_data){
 			user =  new Array(Object.keys(languages).length).fill(0);
 			total_lines = 0
 			user_data = get_user_pie(user_data)
-
 			for (var key in user_data) {
 			    total_lines += user_data[key];
 			}
