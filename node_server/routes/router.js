@@ -42,7 +42,7 @@ router.route("/gitHubUser")
         User.findOne({userName: gitHubUsername}).then((foundUser) => {
             if(!!foundUser) {
                 console.log("Successfully found user");
-                res.render('user', { foundUser });
+                res.render('user', { foundUser: JSON.stringify(foundUser) });
             } else {
                 // Makes query to restful api
                 // save JSON to database
