@@ -1,7 +1,8 @@
 const request = require('request');
 const rp = require('request-promise-native');
+
 const languages = require('./models/languages');
-const user = "christopher-wang";
+
 const options = {
 	uri: '',
 	qs: {
@@ -13,7 +14,7 @@ const options = {
 	json: true
 }
 
-async function get_repos(user){
+const get_repos = async (user) => {
 	options.uri = `https://api.github.com/users/${user}/repos`;
 	try{
 		let repos = [];
@@ -28,7 +29,7 @@ async function get_repos(user){
 	}
 }
 
-async function get_commits(user, repo){
+const get_commits = async (user, repo) => {
 	options.uri = `https://api.github.com/repos/${user}/${repo}/commits?author=${user}`;
 	try{
 		let commits = [];
@@ -43,7 +44,7 @@ async function get_commits(user, repo){
 	}
 }
 
-async function get_inserts(user, repo, sha){
+const get_inserts = async (user, repo, sha) => {
 	options.uri = `https://api.github.com/repos/${user}/${repo}/commits/${sha}`;
 	try{
 		let inserts = {};
@@ -70,7 +71,8 @@ async function get_inserts(user, repo, sha){
 	}
 }
 
-async function get_all(user){
+const get_all = async (user) => {
+	console.log("In get all");
 	let data = [];
 	let repos = await get_repos(user);
 	for(let repo of repos){
@@ -89,3 +91,10 @@ async function get_all(user){
 	}
 	return data;
 }
+
+module.exports = {
+	get_repos,
+	get_commits,
+	get_inserts,
+	get_all
+};
