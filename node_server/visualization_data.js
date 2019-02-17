@@ -188,9 +188,10 @@ function cleaned_data(user){
 	return langs
 }
 
-//function get_ml(user)
+function get_ml(all_users, user){
+	return cleaned_data(get_aggregate_pie(all_users, user))
+}
 //console.log(get_aggregate_pie(all_data, all_data[4]))
-console.log(JSON.stringify(get_user_pie(json4)))
 
 module.exports = {
 	cleaned_data,
