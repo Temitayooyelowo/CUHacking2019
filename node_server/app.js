@@ -3,12 +3,12 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(
-    bodyParser.urlencoded({
-        extended: true
-    }), 
-    bodyParser.json({})
+const ejs = require("ejs");
+app.set('view engine', 'ejs');
 
+app.use(
+    bodyParser.urlencoded({ extended: true}), 
+    // bodyParser.json({})
 );
 app.use(express.static("public"));
 

@@ -1,0 +1,34 @@
+h1 {
+    text-align: center;
+}
+
+.searchButton {
+    margin: 0px 0.5em !important;
+}
+
+.container {
+    padding-top: 2em !important;
+}
+.userName {
+    text-align: left;
+    padding: 0.5em 1em;
+}
+
+.footer-padding {
+	padding-bottom: 60px;
+}
+
+.footer {
+	position: absolute;
+	text-align: center;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: cadetblue;
+}
+
+.footer p {
+	margin-top: 25px;
+	font-size: 12px;
+    color: #fff;
+}
