@@ -1,7 +1,7 @@
 const request = require('request');
 const rp = require('request-promise-native');
 const languages = require('./models/languages');
-const user = "Temitayooyelowo";
+const user = "christopher-wang";
 const options = {
 	uri: '',
 	qs: {
@@ -80,7 +80,7 @@ async function get_all(user){
 		let commits = await get_commits(user, repo);
 		for (let commit of commits){
 			let insertions = await get_inserts(user, repo, commit);
-			if(insertions){
+			if(JSON.stringify(insertions) !== JSON.stringify({})){
 				inserts.push(insertions);
 			}	
 		}
@@ -89,13 +89,3 @@ async function get_all(user){
 	}
 	return data;
 }
-// headers = {"Authorization": "Token 786b261fcd98b88abbb5254d233de5edfbdc1b45"}
-
-// console.log(languages)
-
-async function main() {
-	let getAll = await get_all(user)
-	console.log(JSON.stringify(getAll, 0, undefined));
-}
-
-main();
