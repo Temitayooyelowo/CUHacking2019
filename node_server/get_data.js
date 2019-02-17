@@ -75,7 +75,7 @@ async function get_all(user){
 	let repos = await get_repos(user);
 	for(let repo of repos){
 		let value = {};
-		value["name"] = repo;
+		value["repositories"] = repo;
 		let inserts	= [];
 		let commits = await get_commits(user, repo);
 		for (let commit of commits){
@@ -84,7 +84,7 @@ async function get_all(user){
 				inserts.push(insertions);
 			}	
 		}
-		value["data"] = inserts;
+		value["commits"] = inserts;
 		data.push(value);
 	}
 	return data;
