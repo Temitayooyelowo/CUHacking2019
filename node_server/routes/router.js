@@ -5,9 +5,20 @@ const User = require("../models/user");
 
 router.route("/gitHubUsers/")
     .get((req,res) => {
-        User.find().then((foundUser) => res.send(foundUser))
-            .catch((err) => res.status(400).send(err) );
+        User.find().then((foundUser) => {
+            res.send(foundUser)
+        }).catch((err) => res.status(400).send(err) );
     })
+    .post((req,res) => {
+        const userName = req.body.userName;
+        delete req.body.userName;
+        const repositories = req.body.repositories;
+
+        const newUser = {userName, repositories};
+
+        User.create(newUser).then(() => res.send("Successfully added a new user."))
+            .catch((err) => res.status(400).send(err));
+    });
 
 
 router.route("/gitHubUsers/:gitHubUsername")
@@ -22,16 +33,6 @@ router.route("/gitHubUsers/:gitHubUsername")
             // return JSON
             res.send("No user matching that name was found.");
         }).catch((err) => res.status(400).send(err));
-    })
-    .post((req,res) => {
-        const userName = req.body.userName;
-        delete req.body.userName;
-        const repositories = req.body.repositories;
-
-        const newUser = {userName, repositories};
-
-        User.create(newUser).then(() => res.send("Successfully added a new user."))
-            .catch((err) => res.status(400).send(err));
     })
     .put((req,res) => {
         const userName = req.body.userName;
