@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const vizualizeData = require('../visualization_data');
 const gitHubUser_GetData = require('../get_data');
 const test = require('../test');
 const User = require("../models/user");
@@ -39,17 +40,23 @@ router.route("/gitHubUsers")
     });
 
 router.route("/gitHubUser")
-    .get(async (req,res) => {
+    .get((req,res) => {
         const gitHubUsername = req.query.gitHubUsername;
         let nestedFoundUser;
-        User.findOne({userName: gitHubUsername}, { _id: 0 }).then(async (foundUser) => {
+        User.findOne({userName: gitHubUsername}).then(async (foundUser) => {
             if(!!foundUser) {
-                console.log("Successfully found user");
-                console.log(JSON.stringify(foundUser,undefined,2));
+                // console.log(JSON.stringify(foundUser,undefined,2));
+                console.log('here');
                 nestedFoundUser = test.translateFromDatabase(foundUser);
-                console.log(JSON.stringify(nestedFoundUser,undefined,2));
+                // console.log(JSON.stringify(nestedFoundUser,undefined,2));
+                const repos = nestedFoundUser.repositories;
+                // console.log(JSON.stringify(repos,undefined,2));
+                const pieData = vizualizeData.cleaned_data(repos);
+                console.log(pieData);
+                console.log("Successfully found user");
                 res.render('user', { 
-                    foundUser: nestedFoundUser 
+                    foundUser: nestedFoundUser,
+                    pieData: JSON.stringify(pieData)
                 });
             } else {
                 // Makes query to restful api
@@ -62,11 +69,17 @@ router.route("/gitHubUser")
                         repositories: data
                     };
                     const userData = test.translateToDatabase(nestedFoundUser);
-                    console.log(JSON.stringify(userData,undefined,2));
+                    // console.log(JSON.stringify(userData,undefined,2));
                     const newUser = new User(userData);
                     newUser.save().then(() => {
                         console.log("Did NOT find any user");
-                        return res.render('user', { foundUser: userData });
+                        const pieData = test.translateFromDatabase(userData);
+                        pieData = vizualizeData.cleaned_data(pieData.repositories);
+                        
+                        return res.render('user', { 
+                            foundUser: userData,
+                            pieData: JSON.stringify(pieData)
+                        });
                     });
                 }catch(e) {
                     console.log(e);

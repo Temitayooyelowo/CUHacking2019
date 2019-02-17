@@ -552,37 +552,30 @@ const translateToDatabase = (user) => {
 const translateFromDatabase = (user) => {
     for(let i=0; i<user.repositories.length; i++) {
         let repo = user.repositories[i];
-        // for(let j=0; j<repo.commits.length; j++) {
-        //     let commit = repo.commits[j];
-        //     const finalCommit = {};
-  
-        //     for(let languagesKey in commit) {
-        //         if(languagesKey == 'languages'){
-        //             let language = commit[languagesKey];
-        //             let temp = [];
-        //             for(let key in language) {
-        //                 temp.push({
-        //                     key: language[key]
-        //                 })
-        //             }
-        //             finalCommit[languagesKey] = temp;
-        //         }
-        //     }
-        //     if(finalCommit)
-        //     repo.commits[j] = finalCommit;
-        // }
         for(let j=0; j<repo.commits.length; j++) {
             let language = repo.commits[j].languages;
-            const finalCommit = {};
-            
-            // console.log("COMMIT");
-            // console.log(commit);
-
-            const temp = {};
-            for(let key in language) {
-                temp[key] = language[key];
+            // console.log(language);
+            let temp = {};
+            // if(!_.isEmpty(language)){
+            //     temp[language["language"]] = language["numOfLines"];
+            // }
+            let value = "";
+            // console.log("Language");
+            // console.log(language);
+            // for(let fakeKey of language) {
+            for(let i=0; i<language.length; i++) {
+                let fakeKey = language[i];
+                // console.log("Fake key");
+                // console.log(fakeKey);
+                temp[fakeKey["language"]] = fakeKey["numOfLines"];
+                // temp.language = key;
+                // temp.numOfLines = language[key];
+                language[i] = temp;     
+                // language = language[i];       
             }
-            repo.commits[j].languages = temp;
+            // console.log(temp);
+            repo.commits[j].languages = {};
+            repo.commits[j].languages = repo.commits[j].languages[0];
         }
         user.repositories[i] = repo;
     }

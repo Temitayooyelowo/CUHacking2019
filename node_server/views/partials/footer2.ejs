@@ -1,5 +1,4 @@
         
-    <div id="pieChart"></div>
             <div class="footer-padding"></div>
             
             <div class="footer">
@@ -13,56 +12,13 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
-            var getTest = <%- foundUser %>;
+            var getTest = <%- pieData %>;
         </script>
 
             <script>
-                var dict = {
-                    "css":"#845EC2",
-                    "html":"#D65DB1",
-                    "javascript":"#FF6F91",
-                    "python":"#FF9671",
-                    "java":"#FFC75F",
-                    "c++":"#F9F871",
-                    "c":"#2C73D2",
-                    "c#":"#0089BA"
-                };
-
-                function getLanguageMap (receivedData) {
-                    var dataObj = JSON.parse(JSON.stringify(receivedData));
-                    
-                    var repoData = dataObj["repositories"];
-                    
-                    var returnData = {};
-                    var finalData = [];
-
-                    for (let e of repoData){
-                        for (let v of e['commits']){
-                            let language = v.language;
-                            if(!returnData[language]){
-                                returnData[language] = 1;
-                            } else {
-                                returnData[language] = returnData[language] + 1;
-                            }
-                        }
-                    }
- 
-                    for(let key in returnData) {
-                            finalData.push({
-                            label: key,
-                            value: returnData[key],
-                            color: dict[key]
-                        });
-                    }
-    
-                    console.log(finalData);
-                    
-                    return finalData;
-                }
-
-                languageMap = getLanguageMap (getTest);
-
-                console.log(languageMap);
+                console.log('Pie data');
+                console.log(getTest);
+                
                 var pie = new d3pie("pieChart", {
                     "header": {
                         "title": {
@@ -79,7 +35,7 @@
                     },
                     "data": {
                         "sortOrder": "label-desc",
-                        "content": languageMap,
+                        "content": getTest,
                     "labels": {
                         "outer": {
                             "format": "label-percentage1",

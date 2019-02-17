@@ -38,13 +38,15 @@ function get_user_pie(user_data){
 	let languages = {};
 	for (let repo of user_data){
 		for (let commit of repo["commits"]){
-				Object.keys(commit["languages"]).forEach(function(key,index) {
-				if(key in languages){
-					languages[key] += commit["languages"][key];
-				} else{
-					languages[key] = commit["languages"][key];
-				}
-			});
+			if(!!commit["languages"]) {
+				Object.keys(commit["languages"][0]).forEach(function(key,index) {
+					if(key in languages){
+						languages[key] += commit["languages"][0][key];
+					} else{
+						languages[key] = commit["languages"][0][key];
+					}
+				});
+			}	
 		}
 	}
 	return languages
