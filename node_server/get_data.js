@@ -84,8 +84,15 @@ async function get_all(user){
 				inserts.push(insertions);
 			}	
 		}
-		value["commits"] = inserts;
+		value["data"] = inserts;
 		data.push(value);
 	}
 	return data;
 }
+
+async function main() {
+	let getAll = await get_all(user)
+	console.log(JSON.stringify(getAll));
+}
+
+main();
