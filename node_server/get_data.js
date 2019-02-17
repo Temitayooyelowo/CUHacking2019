@@ -72,6 +72,7 @@ async function get_inserts(user, repo, sha){
 
 async function get_all(user){
 	let data = [];
+	console.log('In get data');
 	let repos = await get_repos(user);
 	for(let repo of repos){
 		let value = {};
@@ -90,9 +91,16 @@ async function get_all(user){
 	return data;
 }
 
-async function main() {
-	let getAll = await get_all(user)
-	console.log(JSON.stringify(getAll));
-}
+// async function main() {
+// 	let getAll = await get_all(user)
+// 	console.log(JSON.stringify(getAll));
+// }
 
-main();
+// main();
+
+module.exports = {
+	get_repos,
+	get_commits,
+	get_inserts,
+	get_all
+};

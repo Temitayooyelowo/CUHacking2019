@@ -1,10 +1,10 @@
+const mongoose = require('mongoose');
+
 commitsSchema = require('./commits');
 
-const repositorySchema = {
+const repositorySchema = new mongoose.Schema({
     name: String,
-    language: [String],
-    numOfLines: Number,
     commits: [commitsSchema]
-};
+}, { _id: false});
 
 module.exports = repositorySchema;

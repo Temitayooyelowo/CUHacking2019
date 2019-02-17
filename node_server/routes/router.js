@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const gitHubUser_GetData = require('../get_data');
+const test = require('../test');
 const User = require("../models/user");
 
 router.route("/")
@@ -37,23 +39,42 @@ router.route("/gitHubUsers")
     });
 
 router.route("/gitHubUser")
-    .get((req,res) => {
+    .get(async (req,res) => {
         const gitHubUsername = req.query.gitHubUsername;
-        User.findOne({userName: gitHubUsername}).then((foundUser) => {
+        let nestedFoundUser;
+        User.findOne({userName: gitHubUsername}, { _id: 0 }).then(async (foundUser) => {
             if(!!foundUser) {
                 console.log("Successfully found user");
-                res.render('user', { foundUser: JSON.stringify(foundUser) });
+                console.log(JSON.stringify(foundUser,undefined,2));
+                nestedFoundUser = test.translateFromDatabase(foundUser);
+                console.log(JSON.stringify(nestedFoundUser,undefined,2));
+                res.render('user', { 
+                    foundUser: nestedFoundUser 
+                });
             } else {
                 // Makes query to restful api
                 // save JSON to database
                 // return JSON
-                
-                console.log("Did NOT find any user");
-                res.render('home', { welcomeText: 'Did NOT find any user' });
+                try {
+                    const data = await gitHubUser_GetData.get_all(gitHubUsername);
+                    nestedFoundUser = {
+                        userName: gitHubUsername,
+                        repositories: data
+                    };
+                    const userData = test.translateToDatabase(nestedFoundUser);
+                    console.log(JSON.stringify(userData,undefined,2));
+                    const newUser = new User(userData);
+                    newUser.save().then(() => {
+                        console.log("Did NOT find any user");
+                        return res.render('user', { foundUser: userData });
+                    });
+                }catch(e) {
+                    console.log(e);
+                }
+               
             }
-
-            
-        }).catch((err) => res.status(400).send(err));
+        })
+        .catch((err) => res.status(400).send(err));
     });
     // .put((req,res) => {
     //     const userName = req.body.userName;

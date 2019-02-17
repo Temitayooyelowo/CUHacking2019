@@ -10,10 +10,10 @@ mongoose.connect("mongodb://localhost:27017/githubUsers", {useNewUrlParser: true
     console.log("Connected to MongoDB server");
 });
 
-const gitHubUserSchema = {
+const gitHubUserSchema = mongoose.Schema({
     userName: String,
     repositories: [repositorySchema]
-};
+});
 
 const User = mongoose.model("GitHubUser", gitHubUserSchema);
 
