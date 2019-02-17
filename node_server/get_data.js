@@ -84,7 +84,7 @@ async function get_all(user){
 				inserts.push(insertions);
 			}	
 		}
-		value["data"] = inserts;
+		value["commits"] = inserts;
 		data.push(value);
 	}
 	return data;
