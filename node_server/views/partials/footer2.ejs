@@ -16,6 +16,17 @@
             var getTest = <%- foundUser %>;
         </script>
             <script>
+                var dict = {
+                    "css":"#845EC2",
+                    "html":"#D65DB1",
+                    "javascript":"#FF6F91",
+                    "python":"#FF9671",
+                    "java":"#FFC75F",
+                    "c++":"#F9F871",
+                    "c":"#2C73D2",
+                    "c#":"#0089BA"
+                };
+
                 function getLanguageMap (receivedData) {
                     var dataObj = JSON.parse(JSON.stringify(receivedData));
                     
@@ -25,7 +36,6 @@
                     var finalData = [];
 
                     for (let e of repoData){
-                        // console.log(e);
                         for (let v of e['commits']){
                             let language = v.language;
                             if(!returnData[language]){
@@ -40,7 +50,7 @@
                             finalData.push({
                             label: key,
                             value: returnData[key],
-                            color: "#6ada6a"
+                            color: dict[key]
                         });
                     }
     
@@ -62,7 +72,7 @@
                         "location": "pie-center",
                     },
                     "size": {
-                        "canvasWidth": 590,
+                        "canvasWidth": 490,
                         "pieInnerRadius": "86%",
                         "pieOuterRadius": "70%"
                     },
