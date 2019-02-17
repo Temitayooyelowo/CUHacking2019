@@ -15,18 +15,21 @@
             var getTest = <%- pieData %>;
         </script>
 
+        <script type="text/javascript">
+            var getAllPieData = <%- allPieData %>;
+        </script>
+
             <script>
-                console.log('Pie data');
-                console.log(getTest);
-                
-                var pie = new d3pie("pieChart", {
+                // console.log('Pie data');
+                // console.log(getTest); aggregatePieChart
+
+                var pie = new d3pie("pieChart1", {
                     "header": {
                         "title": {
                             "text": "Most Used Languages",
                             "fontSize": 20,
                             "font": "courier"
                         },
-                        "location": "pie-center",
                     },
                     "size": {
                         "canvasWidth": 490,
@@ -36,6 +39,65 @@
                     "data": {
                         "sortOrder": "label-desc",
                         "content": getTest,
+                    "labels": {
+                        "outer": {
+                            "format": "label-percentage1",
+                            "pieDistance": 20
+                        },
+                        "inner": {
+                            "format": "none"
+                        },
+                        "mainLabel": {
+                            "fontSize": 11
+                        },
+                        "percentage": {
+                            "color": "#999999",
+                            "fontSize": 11,
+                            "decimalPlaces": 0
+                        },
+                        "value": {
+                            "color": "#cccc43",
+                            "fontSize": 11
+                        },
+                        "lines": {
+                            "enabled": true,
+                            "color": "#777777"
+                        },
+                        "truncation": {
+                            "enabled": true
+                        }
+                    },
+                    "effects": {
+                        "pullOutSegmentOnClick": {
+                            "effect": "linear",
+                            "speed": 400,
+                            "size": 8
+                        }
+                    },
+                    "misc": {
+                        "colors": {
+                            "segmentStroke": "#000000"
+                        }
+                    }
+                }
+            });
+
+            var pie1 = new d3pie("aggregatePieChart", {
+                    "header": {
+                        "title": {
+                            "text": "What your peers are using",
+                            "fontSize": 20,
+                            "font": "courier"
+                        },
+                    },
+                    "size": {
+                        "canvasWidth": 490,
+                        "pieInnerRadius": "86%",
+                        "pieOuterRadius": "70%"
+                    },
+                    "data": {
+                        "sortOrder": "label-desc",
+                        "content": getAllPieData,
                     "labels": {
                         "outer": {
                             "format": "label-percentage1",

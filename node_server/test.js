@@ -550,6 +550,9 @@ const translateToDatabase = (user) => {
 };
 
 const translateFromDatabase = (user) => {
+    if(!user.repositories){
+        return;
+    }
     for(let i=0; i<user.repositories.length; i++) {
         let repo = user.repositories[i];
         for(let j=0; j<repo.commits.length; j++) {

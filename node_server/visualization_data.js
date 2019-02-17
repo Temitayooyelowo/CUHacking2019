@@ -55,7 +55,9 @@ function get_user_pie(user_data){
 function get_aggregate_pie(all_data, user_info){
 	function get_kmeans_data(){
 		let cleaned = []
+		//console.log(all_data)
 		for(let user_data of all_data){
+			//console.log(user_data)
 			user =  new Array(Object.keys(language_map).length).fill(0);
 			if(JSON.stringify(user_data) === JSON.stringify(user_info)){
 				cell = new Array(Object.keys(language_map).length).fill(0);
@@ -81,7 +83,8 @@ function get_aggregate_pie(all_data, user_info){
 		}
 		return cleaned;
 	}
-	clusterMaker.k(2);
+
+	clusterMaker.k(5);
 	clusterMaker.iterations(750);
 	clusterMaker.data(get_kmeans_data());
 	clusters = clusterMaker.clusters()
@@ -190,12 +193,26 @@ function cleaned_data(user){
 	return langs
 }
 
+function cleaned_datas(user){
+	values = user
+	langs = []
+	for(key in values){
+		tmp = {}
+		tmp.label = key
+		tmp.value = Math.floor(values[key] * 100)+ 1
+		tmp.color = color_map[key]
+		langs.push(tmp)
+	}
+	return langs
+}
+
 function get_ml(all_users, user){
-	return cleaned_data(get_aggregate_pie(all_users, user))
+	//console.log(all_users);
+	return cleaned_datas(get_aggregate_pie(all_users, user))
 }
 //console.log(get_aggregate_pie(all_data, all_data[4]))
 
 module.exports = {
 	cleaned_data,
 	get_ml
-}
+} 

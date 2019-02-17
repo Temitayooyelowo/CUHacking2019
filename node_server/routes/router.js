@@ -16,46 +16,59 @@ router.route("/home")
         res.render('home', { welcomeText: "Welcome to our GitHub Analyzer" });
     });
 
-router.route("/gitHubUsers")
-    .get((req,res) => {
-        User.find().then((foundUser) => {
-            // res.send(foundUser)
-            res.render('home', { welcomeText: "Welcome to our GitHub Analyzer" });
-        }).catch((err) => res.status(400).send(err) );
-    })
-    .post((req,res) => {
-        const userName = req.body.userName;
-        delete req.body.userName;
-        const repositories = req.body.repositories;
+// router.route("/gitHubUsers")
+//     .get((req,res) => {
+        // User.find().then((foundUsers) => {
+        //     // res.send(foundUser)
+        //     res.render('home', { welcomeText: "Welcome to our GitHub Analyzer" });
+        // }).catch((err) => res.status(400).send(err) );
+//     })
+    // .post((req,res) => {
+    //     const userName = req.body.userName;
+    //     delete req.body.userName;
+    //     const repositories = req.body.repositories;
 
-        const newUser = {userName, repositories};
+    //     const newUser = {userName, repositories};
 
-        User.create(newUser).then(() => {
-            console.log("Successfully added a new user.");
-            res.render('home', {welcomeText: 'Successfully added a new user.'});
-        })
-            .catch((err) => {
-                res.status(400).send(err);
-            });
-    });
+    //     User.create(newUser).then(() => {
+    //         console.log("Successfully added a new user.");
+    //         res.render('home', {welcomeText: 'Successfully added a new user.'});
+    //     })
+    //         .catch((err) => {
+    //             res.status(400).send(err);
+    //         });
+    // });
 
 router.route("/gitHubUser")
-    .get((req,res) => {
+    .get(async(req,res) => {
         const gitHubUsername = req.query.gitHubUsername;
         let nestedFoundUser;
+        let nestedFoundUsers;
+        const oldUsers = await User.find();
+        const foundUsers = [];
+        for(let i=0; i<oldUsers.length; i++) {
+            let temp = oldUsers[i];
+            foundUsers[i] = test.translateFromDatabase(temp).repositories;
+        }
+        nestedFoundUsers = foundUsers;
+        console.log(nestedFoundUsers);
+
         User.findOne({userName: gitHubUsername}).then(async (foundUser) => {
             if(!!foundUser) {
-                // console.log(JSON.stringify(foundUser,undefined,2));
                 console.log('here');
                 nestedFoundUser = test.translateFromDatabase(foundUser);
-                // console.log(JSON.stringify(nestedFoundUser,undefined,2));
                 const repos = nestedFoundUser.repositories;
-                // console.log(JSON.stringify(repos,undefined,2));
+
+                const allPieData = vizualizeData.get_ml(nestedFoundUsers,repos);
+                console.log("Before");
+                console.log(allPieData);
+
                 const pieData = vizualizeData.cleaned_data(repos);
-                console.log(pieData);
+                // console.log(pieData);
                 console.log("Successfully found user");
                 res.render('user', { 
                     foundUser: nestedFoundUser,
+                    allPieData: JSON.stringify(allPieData),
                     pieData: JSON.stringify(pieData)
                 });
             } else {
@@ -73,13 +86,18 @@ router.route("/gitHubUser")
                     const newUser = new User(userData);
                     newUser.save().then(() => {
                         console.log("Did NOT find any user");
-                        const pieData = test.translateFromDatabase(userData);
+                        let pieData = test.translateFromDatabase(userData);
+
+                        const allPieData = vizualizeData.get_ml(nestedFoundUsers,pieData.repositories);
+
                         pieData = vizualizeData.cleaned_data(pieData.repositories);
                         
-                        return res.render('user', { 
-                            foundUser: userData,
-                            pieData: JSON.stringify(pieData)
-                        });
+                        // res.render('user', { 
+                        //     foundUser: userData,
+                        //     allPieData: JSON.stringify(allPieData),
+                        //     pieData: JSON.stringify(pieData)
+                        // });
+                        res.redirect(`/gitHubUser?gitHubUsername=${gitHubUsername}`);
                     });
                 }catch(e) {
                     console.log(e);
