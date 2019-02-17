@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -20,16 +22,32 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    AnyChartView firstView;
+    AnyChartView secondView;
+    AnyChartView thirdView;
+    AnyChartView fourthView;
+
     Pie pie;
-    AnyChartView pieView;
+
+    Button searchButton;
+    EditText searchBar;
+
+    TextView numOfCommits;
+    TextView numOfPulls;
+    TextView numOfRepos;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getSupportActionBar().hide();
+        getSupportActionBar().hide();
 
 
-        pieView = (AnyChartView) findViewById(R.id.any_chart_view);
+        firstView = (AnyChartView) findViewById(R.id.first_graph);
 
 
         pie = AnyChart.pie();
@@ -42,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         pie.data(data);
 
 
-        pieView.setChart(pie);
+        firstView.setChart(pie);
     }
+
+
 }
