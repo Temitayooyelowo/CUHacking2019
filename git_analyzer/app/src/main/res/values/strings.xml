@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">git_analyzer</string>
+    <string name="search_bar">Search</string>
+    <string name="commits">Commits Made</string>
+    <string name="pulls">Pulls Made</string>
+    <string name="repos">Repositories Created</string>
+
+</resources>
